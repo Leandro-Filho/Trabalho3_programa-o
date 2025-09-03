@@ -59,21 +59,31 @@ def draw_cat_plot(df):
 # 10
 def draw_heat_map():
     # 11
-    df_heat = None
+    cond_ap = df['ap_lo'] <= df['ap_hi']
+    cond_height = (df['height'] >= df['height'].quantile(0.025)) & \
+                (df['height'] <= df['height'].quantile(0.975))
+    cond_weight = (df['weight'] >= df['weight'].quantile(0.025)) & \
+                (df['weight'] <= df['weight'].quantile(0.975))
+    df_heat = df[cond_ap & cond_height & cond_weight]
 
     # 12
-    corr = None
+    corr = df_heat.corr()
 
     # 13
-    mask = None
-
-
+    mask = np.triu(np.ones_like(corr, dtype=bool))
 
     # 14
-    fig, ax = None
+    fig, ax = plt.subplots(figsize=(10,8))
 
     # 15
-
+    sns.heatmap(
+        corr,            
+        mask=mask,        
+        annot=True,        
+        square=True,     
+        cbar_kws={"shrink": 0.75}, 
+        ax = ax
+    )
 
 
     # 16
