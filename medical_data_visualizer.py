@@ -4,10 +4,18 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # 1
-df = None
+df = pd.read_csv('medical_examination.csv')
 
 # 2
-df['overweight'] = None
+df["altura_metros"] = df["height"] / 100
+df["IMC"] = df["weight"] / ((df["altura_metros"]) ** 2)
+def classificar_acima_do_peso(imc):
+    if imc > 25:
+        return 1
+    else:
+        return 0
+
+df["overweight"] = df["IMC"].apply(classificar_acima_do_peso)
 
 # 3
 
